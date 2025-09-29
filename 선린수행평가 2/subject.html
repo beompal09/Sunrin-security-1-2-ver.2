@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>과목 공지</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="fade-in">
+  <header class="glass neon-red-border">
+    <div class="logo">
+      <a href="index.html"><img src="image/sunrin.png" alt="선린 로고"></a>
+      <span id="subjectTitle" class="neon-glitch">과목 공지</span>
+    </div>
+    <nav>
+      <a href="index.html">메인</a>
+      <a href="#" id="adminLoginBtn">관리자 로그인</a>
+    </nav>
+  </header>
+
+  <main>
+    <div class="glass neon-red-border" style="max-width:1000px;margin:20px auto;">
+      
+      <div style="margin-bottom:20px;">
+        <button id="addNoticeBtn">공지 추가</button>
+      </div>
+
+      <form id="noticeForm" style="display:none;margin-bottom:15px;">
+        <input type="text" id="title" placeholder="제목" required style="width:100%;margin-bottom:8px">
+        <textarea id="content" placeholder="내용" rows="4" style="width:100%;margin-bottom:8px"></textarea>
+        <div style="display:flex;gap:8px;align-items:center;margin-bottom:8px;">
+          <input type="date" id="date" required style="flex:1;min-width:150px;">
+        </div>
+        <div style="display:flex;gap:8px;">
+          <button type="submit" style="flex:1;">추가</button>
+          <button type="button" id="cancelBtn" style="flex:1;">취소</button>
+        </div>
+      </form>
+
+      <hr>
+
+      <div id="noticeList"></div>
+    </div>
+  </main>
+
+  <!-- Modals -->
+  <div id="noticeModal" class="modal" style="display:none;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 id="modalTitle"></h2>
+        <span class="close" id="noticeModalClose">&times;</span>
+      </div>
+      <div class="modal-body">
+        <div class="modal-info">
+          <p><strong>과목:</strong> <span id="modalSubject"></span></p>
+          <p><strong>날짜:</strong> <span id="modalDate"></span></p>
+          <p><strong>마감까지:</strong> <span id="modalDeadline"></span></p>
+        </div>
+        <div class="modal-content-text">
+          <h3>내용</h3>
+          <p id="modalContent"></p>
+        </div>
+        <div id="modalEditForm" style="display:none;padding:20px;border-top:1px solid rgba(255,42,42,0.3);">
+          <h3 style="color:#ff2a2a;margin-bottom:15px;">공지 수정</h3>
+          <form id="editForm">
+            <input type="text" id="editTitle" placeholder="제목" required style="width:100%;margin-bottom:8px">
+            <textarea id="editContent" placeholder="내용" rows="4" style="width:100%;margin-bottom:8px"></textarea>
+            <input type="date" id="editDate" required style="width:100%;margin-bottom:8px;">
+            <div style="display:flex;gap:8px;">
+              <button type="submit" style="flex:1;">수정 완료</button>
+              <button type="button" id="cancelEditBtn" style="flex:1;">취소</button>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button id="editModalBtn" class="edit-btn">수정</button>
+        <button id="deleteModalBtn" class="del-btn">삭제</button>
+        <button id="closeModalBtn">닫기</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="loginModal" class="modal" style="display:none;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>관리자 로그인</h2>
+        <span class="close" id="loginModalClose">&times;</span>
+      </div>
+      <div class="modal-body">
+        <form id="loginForm" style="display: flex; flex-direction: column; gap: 10px;">
+          <input type="email" id="loginEmail" placeholder="이메일" required>
+          <input type="password" id="loginPassword" placeholder="비밀번호" required>
+          <button type="submit">로그인</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div id="warningModal" class="modal" style="display:none;">
+    <div class="modal-content">
+      <div class="modal-header warning-header">
+        <h2 id="warningTitle" class="glitch" data-text="⚠️ 경고">⚠️ 경고</h2>
+        <span class="close" id="warningModalClose">&times;</span>
+      </div>
+      <div class="modal-body">
+        <p id="warningMessage"></p>
+        <button id="warningModalOkBtn" style="width: 100%; margin-top: 20px;">확인</button>
+      </div>
+    </div>
+  </div>
+
+  <footer class="glass neon-red-border">&copy; 2025 선린인터넷고등학교 1-2반 정보보호과</footer>
+
+  <script type="module">
+    import { 
+      addNotice, 
+      listenNoticesBySubject, 
+      updateNotice, 
+      deleteNoticeById,
+      login,
+      logout,
+      onAuthChange
+    } from "./app.js";
+
+    let isAdmin = false;
+    let currentModalNotice = null;
+    const urlParams = new URLSearchParams(window.location.search);
+    const currentSubject = urlParams.get("name") || "과목 미지정";
+
+    // --- DOM Elements ---
+    const subjectTitle = document.getElementById("subjectTitle");
+    const noticeList = document.getElementById("noticeList");
+    const addNoticeBtn = document.getElementById("addNoticeBtn");
+    const noticeForm = document.getElementById("noticeForm");
+    const cancelBtn = document.getElementById("cancelBtn");
+    const adminLoginBtn = document.getElementById("adminLoginBtn");
+
+    // --- Modals & Forms ---
+    const noticeModal = document.getElementById("noticeModal");
+    const loginModal = document.getElementById("loginModal");
+    const warningModal = document.getElementById("warningModal");
+    const modalEditForm = document.getElementById("modalEditForm");
+    const editForm = document.getElementById("editForm");
+    const loginForm = document.getElementById("loginForm");
+    
+    // --- Modal Buttons ---
+    const noticeModalClose = document.getElementById("noticeModalClose");
+    const closeModalBtn = document.getElementById("closeModalBtn");
+    const loginModalClose = document.getElementById("loginModalClose");
+    const warningModalClose = document.getElementById("warningModalClose");
+    const warningModalOkBtn = document.getElementById("warningModalOkBtn");
+    const editModalBtn = document.getElementById("editModalBtn");
+    const deleteModalBtn = document.getElementById("deleteModalBtn");
+    const cancelEditBtn = document.getElementById("cancelEditBtn");
+
+    // --- Utility ---
+    const getDaysUntilDeadline = (dateStr) => {
+      const deadline = new Date(dateStr);
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      deadline.setHours(0, 0, 0, 0);
+      const diffTime = deadline - today;
+      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+      if (diffDays < 0) return "마감됨";
+      if (diffDays === 0) return "오늘 마감";
+      if (diffDays === 1) return "내일 마감";
+      return `${diffDays}일 남음`;
+    };
+
+    // --- Modal Control ---
+    const setupModal = (modal, closeBtn) => {
+      if (closeBtn) closeBtn.addEventListener("click", () => modal.style.display = "none");
+    };
+    setupModal(noticeModal, noticeModalClose);
+    setupModal(loginModal, loginModalClose);
+    setupModal(warningModal, warningModalClose);
+    warningModalOkBtn.addEventListener("click", () => warningModal.style.display = "none");
+    closeModalBtn.addEventListener("click", () => noticeModal.style.display = "none");
+    window.addEventListener("click", (e) => {
+      if (e.target === noticeModal || e.target === loginModal || e.target === warningModal) {
+        e.target.style.display = "none";
+      }
+    });
+    
+    const showWarning = (message) => {
+      document.getElementById("warningMessage").textContent = message;
+      warningModal.style.display = "block";
+    };
+
+    // --- Auth Logic ---
+    const handleAuthStateChange = (user) => {
+      isAdmin = !!user;
+      if (isAdmin) {
+        adminLoginBtn.textContent = "로그아웃";
+        adminLoginBtn.removeEventListener("click", openLoginModal);
+        adminLoginBtn.addEventListener("click", handleLogout);
+      } else {
+        adminLoginBtn.textContent = "관리자 로그인";
+        adminLoginBtn.removeEventListener("click", handleLogout);
+        adminLoginBtn.addEventListener("click", openLoginModal);
+      }
+    };
+
+    const openLoginModal = (e) => {
+      if (e) e.preventDefault();
+      loginModal.style.display = "block";
+    };
+
+    const handleLogin = async (e) => {
+      e.preventDefault();
+      const email = document.getElementById("loginEmail").value;
+      const password = document.getElementById("loginPassword").value;
+      try {
+        await login(email, password);
+        loginModal.style.display = "none";
+        loginForm.reset();
+      } catch (error) {
+        showWarning("로그인 실패: " + error.message);
+      }
+    };
+
+    const handleLogout = async (e) => {
+      e.preventDefault();
+      try {
+        await logout();
+      } catch (error) {
+        showWarning("로그아웃 실패: " + error.message);
+      }
+    };
+
+    adminLoginBtn.addEventListener("click", openLoginModal);
+    loginForm.addEventListener("submit", handleLogin);
+    onAuthChange(handleAuthStateChange);
+
+    // --- Notice CUD ---
+    addNoticeBtn.addEventListener("click", () => {
+      if (!isAdmin) {
+        showWarning("권한이 없습니다.");
+        return;
+      }
+      noticeForm.style.display = "block";
+      document.getElementById("date").valueAsDate = new Date();
+    });
+
+    cancelBtn.addEventListener("click", () => {
+      noticeForm.style.display = "none";
+      noticeForm.reset();
+    });
+
+    noticeForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      if (!isAdmin) return showWarning("권한이 없습니다.");
+
+      const title = document.getElementById("title").value.trim();
+      const content = document.getElementById("content").value.trim();
+      const date = document.getElementById("date").value;
+      if (!title || !date) return showWarning("제목과 날짜는 필수입니다.");
+
+      try {
+        await addNotice({ subject: currentSubject, title, content, date });
+        noticeForm.reset();
+        noticeForm.style.display = "none";
+      } catch (error) {
+        showWarning("공지 추가 실패: " + error.message);
+      }
+    });
+
+    editModalBtn.addEventListener("click", () => {
+      if (!isAdmin) return showWarning("권한이 없습니다.");
+      if (!currentModalNotice) return;
+      modalEditForm.style.display = "block";
+      document.getElementById("editTitle").value = currentModalNotice.title;
+      document.getElementById("editContent").value = currentModalNotice.content || "";
+      document.getElementById("editDate").value = currentModalNotice.date;
+    });
+    
+    cancelEditBtn.addEventListener("click", () => {
+        modalEditForm.style.display = "none";
+    });
+
+    editForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        if (!isAdmin) return showWarning("권한이 없습니다.");
+        if (!currentModalNotice) return;
+
+        const newTitle = document.getElementById("editTitle").value.trim();
+        const newContent = document.getElementById("editContent").value.trim();
+        const newDate = document.getElementById("editDate").value;
+        if (!newTitle || !newDate) return showWarning("제목과 날짜는 필수입니다.");
+
+        try {
+            await updateNotice(currentModalNotice.id, { title: newTitle, content: newContent, date: newDate });
+            modalEditForm.style.display = "none";
+            noticeModal.style.display = "none";
+        } catch (error) {
+            showWarning("공지 수정 실패: " + error.message);
+        }
+    });
+
+    deleteModalBtn.addEventListener("click", async () => {
+      if (!isAdmin) return showWarning("권한이 없습니다.");
+      if (!currentModalNotice) return;
+      if (confirm("정말로 이 공지를 삭제하시겠습니까?")) {
+        try {
+          await deleteNoticeById(currentModalNotice.id);
+          noticeModal.style.display = "none";
+        } catch (error) {
+          showWarning("삭제 실패: " + error.message);
+        }
+      }
+    });
+
+    // --- Notice Rendering ---
+    const openNoticeModal = (notice) => {
+      currentModalNotice = notice;
+      document.getElementById("modalTitle").textContent = notice.title;
+      document.getElementById("modalSubject").textContent = notice.subject;
+      document.getElementById("modalDate").textContent = notice.date;
+      document.getElementById("modalDeadline").textContent = getDaysUntilDeadline(notice.date);
+      document.getElementById("modalContent").textContent = notice.content || "내용이 없습니다.";
+      modalEditForm.style.display = "none"; // Hide edit form initially
+      noticeModal.style.display = "block";
+    };
+
+    const renderList = (notices) => {
+      noticeList.innerHTML = "";
+      if (!notices.length) {
+        noticeList.innerHTML = "<p>등록된 공지가 없습니다.</p>";
+        return;
+      }
+      notices.sort((a, b) => new Date(b.date) - new Date(a.date)); // Sort by date descending
+      notices.forEach(n => {
+        const div = document.createElement("div");
+        div.className = "notice-item";
+        div.innerHTML = `<strong>[${n.subject}] ${n.title}</strong><p>${n.date} - ${getDaysUntilDeadline(n.date)}</p>`;
+        
+        // Add click event to open modal
+        div.addEventListener("click", () => openNoticeModal(n));
+
+        // Add hover effects
+        div.style.transition = "all 0.2s ease-in-out";
+        div.addEventListener("mouseenter", () => {
+            div.style.background = "rgba(255,42,42,0.1)";
+            div.style.transform = "translateY(-2px)";
+        });
+        div.addEventListener("mouseleave", () => {
+            div.style.background = "transparent";
+            div.style.transform = "translateY(0)";
+        });
+
+        noticeList.appendChild(div);
+      });
+    };
+
+    // --- Initial Load ---
+    subjectTitle.textContent = `선린 · ${currentSubject}`;
+    listenNoticesBySubject(currentSubject, renderList);
+
+  </script>
+</body>
+</html>

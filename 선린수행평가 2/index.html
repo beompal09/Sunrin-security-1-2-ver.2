@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>수행평가 공지</title>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
+</head>
+<body class="fade-in">
+
+<header class="glass neon-red-border">
+  <div class="logo">
+    <a href="index.html"><img src="image/sunrin.png" alt="선린 로고"></a>
+    <span>선린인터넷고등학교 1-2반 정보보호과</span>
+  </div>
+  <nav>
+    <a href="index.html">메인</a>
+    <a href="about.html">소개</a>
+    <a href="contact.html">문의</a>
+    <a href="#" id="adminLoginBtn">관리자 로그인</a>
+  </nav>
+</header>
+
+<main>
+  <!-- 메인 메뉴 -->
+  <div class="glass neon-red-border pulse-red">
+
+    <h1 class="glitch" data-text="Main Menu">Main Menu</h1>
+    <div class="section-links">
+      <a href="general.html">일반 교과</a>
+      <a href="major.html">전공 교과</a>
+      <a href="#" id="calendarToggle">수행 일정 달력</a>
+    </div>
+    <button id="showUrgentNoticesBtn" style="margin-top: 20px;">⚠️ 마감 임박 공지 보기</button>
+  </div>
+</main>
+
+<footer class="glass neon-red-border">
+  &copy; 2025 선린인터넷고등학교 1-2반 정보보호과
+</footer>
+
+<!-- 공지 상세 모달 -->
+<div id="noticeModal" class="modal" style="display:none;">
+  <div class="modal-content" id="noticeModalContent">
+    <div class="modal-header">
+      <h2 id="modalTitle"></h2>
+      <span class="close" id="modalClose">&times;</span>
+    </div>
+    <div class="modal-body">
+      <div class="modal-info">
+        <p><strong>과목:</strong> <span id="modalSubject"></span></p>
+        <p><strong>마감일:</strong> <span id="modalDate"></span></p>
+      </div>
+      <div class="modal-content-text">
+        <h3>내용</h3>
+        <p id="modalContent"></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 달력 모달 -->
+<div id="calendarModal" class="modal" style="display:none;">
+  <div class="modal-content" id="calendarModalContent">
+    <div class="modal-header">
+      <h2 id="monthTitle" class="glitch" data-text="📅 수행 일정 달력"></h2>
+      <span class="close" id="calendarModalClose">&times;</span>
+    </div>
+    <div class="modal-body">
+      <div class="calendar-controls">
+        <button id="prevMonth">◀</button>
+        <button id="nextMonth">▶</button>
+      </div>
+      <div id="calendar"></div>
+    </div>
+  </div>
+</div>
+
+<!-- 날짜별 공지 모달 -->
+<div id="dayNoticesModal" class="modal" style="display:none;">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2 id="dayNoticesTitle"></h2>
+      <span class="close" id="dayNoticesModalClose">&times;</span>
+    </div>
+    <div class="modal-body" id="dayNoticesList"></div>
+  </div>
+</div>
+
+<!-- 마감 임박 공지 팝업 -->
+<div id="urgentNoticesPopup" class="modal" style="display:none;">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2 class="glitch" data-text="⚠️ 마감 임박 공지">⚠️ 마감 임박 공지</h2>
+      <span class="close" id="urgentNoticesPopupClose">&times;</span>
+    </div>
+    <div class="modal-body">
+      <div id="urgentNoticesListPopup"></div> <!-- Changed ID to avoid conflict -->
+      <div style="text-align: center; margin-top: 20px;">
+        <button id="urgentNoticesPopupDontShowAgain">다시 보지 않기</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 관리자 로그인 모달 -->
+<div id="loginModal" class="modal" style="display:none;">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2>관리자 로그인</h2>
+      <span class="close" id="loginModalClose">&times;</span>
+    </div>
+    <div class="modal-body">
+      <form id="loginForm" style="display: flex; flex-direction: column; gap: 10px;">
+        <input type="email" id="loginEmail" placeholder="이메일" required>
+        <input type="password" id="loginPassword" placeholder="비밀번호" required>
+        <button type="submit">로그인</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- 경고 모달 -->
+<div id="warningModal" class="modal" style="display:none;">
+  <div class="modal-content">
+    <div class="modal-header warning-header">
+      <h2 id="warningTitle" class="glitch" data-text="⚠️ 경고">⚠️ 경고</h2>
+      <span class="close" id="warningModalClose">&times;</span>
+    </div>
+    <div class="modal-body">
+      <p id="warningMessage"></p>
+      <button id="warningModalOkBtn" style="width: 100%; margin-top: 20px;">확인</button>
+    </div>
+  </div>
+</div>
+
+<script type="module" src="app.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/dompurify@2.3.6/dist/purify.min.js"></script>
+<script type="module" src="index.js"></script>
+
+</body>
+</html>

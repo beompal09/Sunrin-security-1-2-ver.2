@@ -1,0 +1,813 @@
+@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@500;700&display=swap');
+
+body {
+  margin: 0;
+  font-family: 'Orbitron', sans-serif;
+  background: #000;
+  color: #ff2a2a;
+  overflow-x: hidden;
+  position: relative;
+}
+
+.background-code {
+  position: fixed;
+  top:0; left:0; width:100%; height:100%;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(0,0,0,0.9),
+    rgba(0,0,0,0.9) 2px,
+    rgba(255,42,42,0.02) 2px,
+    rgba(255,42,42,0.02) 4px
+  );
+  z-index: -1;
+  animation: codeFlow 10s linear infinite;
+}
+
+@keyframes codeFlow {
+  0% { background-position: 0 0; }
+  100% { background-position: 0 100%; }
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 30px;
+  background: #111;
+  border-bottom: 1px solid #ff2a2a;
+  box-shadow: 0 0 20px #ff2a2a30;
+  flex-wrap: wrap;
+}
+
+header .logo {
+  display: flex;
+  align-items: center;
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+header .logo img {
+  height: 40px;
+  margin-right: 10px;
+  filter: drop-shadow(0 0 5px #ff2a2a);
+}
+
+/* 로고 글자 Orbitron 적용 */
+header .logo span {
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 700;
+}
+
+nav a {
+  margin-left: 20px;
+  text-decoration: none;
+  color: #ff2a2a;
+  font-weight: bold;
+  font-family: 'Orbitron', sans-serif; /* 메뉴 폰트 */
+  transition: 0.3s;
+}
+
+nav a:hover {
+  color: #ff5555;
+  text-shadow: 0 0 10px #ff5555, 0 0 20px #ff5555;
+}
+
+main {
+  padding: 50px 20px;
+  text-align: center;
+}
+
+h1, h2 {
+  color: #ff2a2a;
+  text-shadow: 0 0 8px #ff2a2a, 0 0 16px #ff2a2a;
+  font-family: 'Orbitron', sans-serif;
+}
+
+/* 달력 제목 스타일 */
+#monthTitle {
+  margin: 0;
+  text-align: center;
+  padding: 8px 0;
+}
+
+.neon-orbitron {
+  color: #ff2a2a;
+  text-shadow: 0 0 5px #ff2a2a, 0 0 10px #ff005e, 0 0 20px #ff8282;
+}
+
+.glass {
+  background: rgba(0,0,0,0.7);
+  backdrop-filter: blur(15px);
+  border: 1px solid rgba(255,255,255,0.03);
+  border-radius: 12px;
+  padding: 30px;
+  margin: 20px auto;
+  max-width: 90%;
+  box-shadow: 0 0 25px #ff2a2a30;
+  animation: fadeIn 1.2s ease-in forwards;
+}
+
+/* 일반/전공 교과 버튼 Orbitron 적용 */
+.section-links a, .subject-links a {
+  display: block;
+  margin: 15px auto;
+  padding: 15px;
+  width: 500px;
+  border: 1px solid #ff2a2a;
+  border-radius: 10px;
+  text-decoration: none;
+  color: #ff2a2a;
+  font-weight: 700; /* Explicitly set to 700 */
+  box-shadow: 0 0 10px #ff2a2a, 0 0 20px #ff2a2a50; /* Simpler glow effect */
+  transition: all 0.3s ease;
+  font-size: 1.1rem; /* Increased font size */
+  text-shadow: 0 0 5px rgba(255, 42, 42, 0.7), 0 0 10px rgba(255, 0, 94, 0.5); /* Adjusted brightness */
+}
+
+.section-links a:hover, .subject-links a:hover, #calendarToggle:hover {
+  background: #ff2a2a;
+  color: #000;
+  box-shadow: 0 0 25px #ff2a2a, 0 0 50px #ff2a2a50;
+  transform: scale(1.05);
+}
+
+#calendarContainer {
+  animation: slideDown 0.5s ease-out forwards;
+  overflow: hidden;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+footer {
+  text-align: center;
+  padding: 20px;
+  border-top: 1px solid #ff2a2a;
+  background: #111;
+  font-size: 0.9rem;
+  text-shadow: 0 0 5px #ff2a2a;
+}
+
+.glitch {
+  position: relative;
+  animation: glitch 2s infinite;
+}
+
+.glitch::before,
+.glitch::after {
+  content: attr(data-text);
+  position: absolute;
+  left: 0;
+  width: 100%;
+  overflow: hidden;
+  color: #ff2a2a;
+  clip: rect(0,0,0,0);
+}
+
+.glitch::before {
+  animation: glitchTop 2s infinite linear;
+  color: #ff005e;
+}
+
+.glitch::after {
+  animation: glitchBottom 2s infinite linear;
+  color: #ff8282;
+}
+
+@keyframes glitch {
+  0% { transform: translate(0); }
+  20% { transform: translate(-2px,2px); }
+  40% { transform: translate(2px,-2px); }
+  60% { transform: translate(-1px,1px); }
+  80% { transform: translate(1px,-1px); }
+  100% { transform: translate(0); }
+}
+
+@keyframes glitchTop {
+  0%,100% { clip: rect(0,9999px,0,0);}
+  10% { clip: rect(0,9999px,5px,0);}
+  30% { clip: rect(5px,9999px,10px,0);}
+}
+
+@keyframes glitchBottom {
+  0%,100% { clip: rect(0,9999px,0,0);}
+  10% { clip: rect(10px,9999px,15px,0);}
+  40% { clip: rect(15px,9999px,20px,0);}
+}
+
+.fade-in {
+  opacity: 0;
+  animation: fadeIn 1s forwards;
+}
+
+@keyframes fadeIn {
+  to { opacity: 1; transform: scale(1); }
+}
+
+.pulse-red {
+  animation: pulseRed 2s infinite;
+}
+
+@keyframes pulseRed {
+  0%,100% { box-shadow: 0 0 20px #ff2a2a, 0 0 40px #ff2a2a; }
+  50% { box-shadow: 0 0 10px #ff2a2a, 0 0 15px #ff2a2a; }
+}
+
+
+/* === 일반/전공 교과 이미지 카드 스타일 추가 === */
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 20px;
+  justify-items: center;
+}
+
+.subject-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-decoration: none;
+  color: #ff2a2a;
+  border: 2px solid #ff1a1a; /* Even redder border */
+  border-radius: 12px;
+  padding: 10px;
+  width: 150px; /* Restore width */
+  transition: all 0.3s ease;
+  box-shadow: 0 0 20px #ff1a1a, 0 0 40px rgba(255,26,26,0.8), inset 0 0 15px rgba(255,26,26,0.5);
+}
+
+.subject-card img {
+  width: 100%;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  /* 기본 상태: 흑백 + 레드 글로우 필터 */
+  filter: grayscale(80%) contrast(1.1) brightness(0.8);
+  box-shadow: 0 0 15px rgba(255, 42, 42, 0.5);
+  transition: all 0.4s ease; /* 부드러운 전환 효과 */
+}
+
+.subject-card span {
+  font-family: 'Orbitron', sans-serif;
+  font-weight: bold;
+  text-align: center;
+}
+
+.subject-card:hover img {
+  /* 호버 상태: 원래 색상 복귀 및 색수차 효과 + 글로우 강화 */
+  filter: grayscale(0%) contrast(1) brightness(1);
+  transform: scale(1.05);
+  box-shadow: 
+    2px 2px 0px #00ffff, 
+    -2px -2px 0px #ff00ff,
+    0 0 25px rgba(255, 42, 42, 1);
+}
+
+.subject-card:hover {
+  background: #ff2a2a;
+  color: #000;
+  box-shadow: 0 0 25px #ff2a2a, 0 0 50px #ff2a2a50;
+}
+
+.neon-glitch {
+  color: #ff2a2a;
+  text-shadow:
+    0 0 5px rgba(255, 42, 42, 0.7),
+    0 0 10px rgba(255, 0, 94, 0.5),
+    0 0 20px rgba(255, 130, 130, 0.4),
+    0 0 30px rgba(255, 42, 42, 0.3);
+  animation: glitch 1.5s infinite;
+}
+
+.subject-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.subject-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(120deg, rgba(255,42,42,0.1) 0%, rgba(255,42,42,0.3) 50%, rgba(255,42,42,0.1) 100%);
+  transform: skewX(-20deg);
+  transition: 0.5s;
+  z-index: 0;
+}
+
+.subject-card:hover::before {
+  left: 100%;
+}
+
+header.glass, .subject-card {
+  box-shadow: 0 0 35px #ff2a2a60, 0 0 70px #ff2a2a30 inset;
+}
+
+@keyframes codeFlow {
+  0% { background-position: 0 0; }
+  100% { background-position: 0 200%; } /* 기존 100%에서 200%로 변경 */
+}
+
+/* 달력 스타일 */
+.calendar {
+  border: 2px solid #ff2a2a;
+  border-radius: 12px;
+  padding: 25px;
+  margin: 5px auto;
+  background: #1a1a1a;
+  min-height: 400px;
+  box-shadow: 0 0 25px #ff2a2a40;
+  max-width: 80%;
+}
+
+/* 달력 요일 스타일 */
+.calendar-row {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 6px;
+  margin-bottom: 10px;
+}
+
+.calendar-weekday {
+  text-align: center;
+  font-weight: bold;
+  padding: 8px;
+  color: #ff2a2a;
+  border-bottom: 1px solid rgba(255,42,42,0.3);
+}
+
+.calendar-cell {
+  min-height: 100px;
+  border: 1px solid rgba(255,42,42,0.2);
+  border-radius: 4px;
+  padding: 6px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background: rgba(0,0,0,0.3);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.calendar-cell:hover {
+  background: rgba(255,42,42,0.1);
+  border-color: #ff2a2a;
+}
+
+.calendar-cell.empty {
+  background: transparent;
+  border: none;
+  cursor: default;
+}
+
+.day-number {
+  font-weight: bold;
+  color: #ff2a2a;
+  margin-bottom: 4px;
+  flex-shrink: 0;
+  font-size: 14px;
+  text-align: center;
+}
+
+.day-badges {
+  flex: 1;
+  overflow-y: auto;
+  max-height: 70px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.calendar-badge {
+  font-size: 10px;
+  padding: 3px 5px;
+  margin-bottom: 2px;
+  background: rgba(255,42,42,0.12);
+  border-left: 2px solid #ff2a2a;
+  border-radius: 4px;
+  color: #ff2a2a;
+  word-break: break-all;
+  line-height: 1.2;
+  flex-shrink: 0;
+}
+
+/* 공지 관련 스타일 */
+.notice-item {
+  background: rgba(255,42,42,0.05);
+  border: 1px solid rgba(255,42,42,0.2);
+  border-radius: 8px;
+  padding: 12px;
+  margin-bottom: 8px;
+  cursor: pointer;
+}
+
+.notice-item strong {
+  color: #ff2a2a;
+  display: block;
+  margin-bottom: 4px;
+}
+
+.notice-item p {
+  color: #ddd;
+  margin: 4px 0;
+}
+
+.notice-item small {
+  color: #999;
+  font-size: 0.8rem;
+}
+
+.subject-notice {
+  border-bottom: 1px solid rgba(255,42,42,0.08);
+  padding: 12px 0;
+}
+
+.subject-notice strong {
+  cursor: pointer;
+  color: #ff2a2a;
+  transition: color 0.3s ease;
+}
+
+.subject-notice strong:hover {
+  color: #ff5555;
+}
+
+/* 버튼 스타일 */
+button {
+  background: rgba(255,42,42,0.1);
+  border: 1px solid #ff2a2a;
+  color: #ff2a2a;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-family: 'Orbitron', sans-serif;
+  font-weight: bold;
+  transition: all 0.3s ease;
+}
+
+button:hover {
+  background: #ff2a2a;
+  color: #000;
+  box-shadow: 0 0 15px #ff2a2a;
+}
+
+.edit-btn, .del-btn {
+  margin-left: 8px;
+  padding: 4px 8px;
+  font-size: 0.9rem;
+}
+
+.del-btn {
+  background: rgba(255,0,0,0.1);
+  border-color: #ff0000;
+  color: #ff0000;
+}
+
+.del-btn:hover {
+  background: #ff0000;
+  color: #fff;
+}
+
+/* 입력 폼 스타일 */
+input, textarea {
+  background: rgba(0,0,0,0.5);
+  border: 1px solid rgba(255,42,42,0.3);
+  color: #ff2a2a;
+  padding: 8px;
+  border-radius: 4px;
+  font-family: 'Orbitron', sans-serif;
+}
+
+input:focus, textarea:focus {
+  outline: none;
+  border-color: #ff2a2a;
+  box-shadow: 0 0 10px rgba(255,42,42,0.3);
+}
+
+input::placeholder, textarea::placeholder {
+  color: rgba(255,42,42,0.6);
+}
+
+/* 날짜 입력 필드 특별 스타일 */
+input[type="date"] {
+  background: rgba(0,0,0,0.5);
+  border: 1px solid rgba(255,42,42,0.3);
+  color: #ff2a2a;
+  padding: 8px;
+  border-radius: 4px;
+  font-family: 'Orbitron', sans-serif;
+  cursor: pointer;
+  min-width: 150px;
+}
+
+input[type="date"]:focus {
+  outline: none;
+  border-color: #ff2a2a;
+  box-shadow: 0 0 10px rgba(255,42,42,0.3);
+}
+
+/* 날짜 선택기 캘린더 아이콘 스타일 */
+input[type="date"]::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+  opacity: 0.8;
+  /* 필터를 사용해 아이콘 색상을 흰색으로 변경 */
+  filter: invert(1);
+  transition: opacity 0.3s ease;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator:hover {
+  opacity: 1;
+}
+
+/* 달력 네비게이션 버튼 */
+#prevMonth, #nextMonth {
+  background: rgba(255,42,42,0.1);
+  border: 1px solid #ff2a2a;
+  color: #ff2a2a;
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-family: 'Orbitron', sans-serif;
+  font-weight: bold;
+  margin: 0 4px;
+  transition: all 0.3s ease;
+}
+
+#prevMonth:hover, #nextMonth:hover {
+  background: #ff2a2a;
+  color: #000;
+  box-shadow: 0 0 15px #ff2a2a;
+}
+
+/* 모달 스타일 */
+.modal {
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.8);
+  backdrop-filter: blur(5px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#noticeModal {
+  z-index: 1001;
+}
+
+#warningModal {
+  z-index: 1002;
+}
+
+.modal-content {
+  background: rgba(0,0,0,0.9);
+  border: 2px solid #ff2a2a;
+  border-radius: 12px;
+  margin: auto;
+  padding: 0;
+  width: 80%;
+  max-width: 90%;
+  box-shadow: 0 0 30px #ff2a2a;
+  animation: modalSlideIn 0.3s ease-out;
+}
+
+@keyframes modalSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20vh); /* Start further up */
+  }
+  to {
+    opacity: 1;
+    transform: translateY(-5vh); /* End slightly above center */
+  }
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  border-bottom: 1px solid rgba(255,42,42,0.3);
+  background: rgba(255,42,42,0.1);
+}
+
+.modal-header h2 {
+  margin: 0;
+  color: #ff2a2a;
+  font-family: 'Orbitron', sans-serif;
+}
+
+.close {
+  color: #ff2a2a;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.close:hover {
+  color: #ff5555;
+}
+
+.modal-body {
+  padding: 20px;
+}
+
+.modal-info {
+  margin-bottom: 20px;
+}
+
+.modal-info p {
+  margin: 8px 0;
+  color: #ddd;
+}
+
+.modal-info strong {
+  color: #ff2a2a;
+}
+
+.modal-content-text h3 {
+  color: #ff2a2a;
+  margin-bottom: 10px;
+  font-family: 'Orbitron', sans-serif;
+}
+
+.modal-content-text p {
+  color: #ddd;
+  line-height: 1.6;
+  white-space: pre-wrap;
+}
+
+/* 달력 모달 특별 스타일 */
+#calendarModalContent {
+  max-width: 90%; /* 달력 모달 폭 축소 */
+}
+
+.calendar-controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+#dayNotices {
+  border-top: 1px solid rgba(255,42,42,0.2);
+  margin-top: 15px;
+  padding-top: 15px;
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  padding: 20px;
+  border-top: 1px solid rgba(255,42,42,0.3);
+  background: rgba(255,42,42,0.05);
+}
+
+
+/* 마감 임박 공지 스타일 */
+@keyframes pulseUrgent {
+  0%, 100% {
+    background: rgba(255,0,0,0.1);
+    border-color: #ff0000;
+  }
+  50% {
+    background: rgba(255,0,0,0.2);
+    border-color: #ff5555;
+  }
+}
+
+.urgent-notice-item {
+  background: rgba(255,0,0,0.1);
+  border: 1px solid #ff0000;
+  border-radius: 8px;
+  padding: 12px;
+  margin-bottom: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  animation: pulseUrgent 2s infinite;
+  width: 500px; /* 공지 박스 가로 줄임 */
+  margin-left: auto; /* 중앙 정렬 */
+  margin-right: auto; /* 중앙 정렬 */
+  flex-shrink: 0;
+  flex-grow: 0;
+}
+
+.urgent-notice-item:hover {
+  background: rgba(255,0,0,0.25);
+  transform: scale(1.02);
+}
+
+/* 반응형 */
+@media (max-width: 768px) {
+  .section-links a, .subject-links a { width: 80%; }
+  .grid-container { grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); }
+  header { flex-direction: column; align-items: flex-start; }
+  nav a { margin-left: 10px; margin-top: 5px; }
+  
+  .modal-content {
+    width: 95%;
+    margin: 10% auto;
+  }
+  
+  .modal-footer {
+    flex-direction: column;
+  }
+}
+
+/* Specific width adjustments */
+main .glass:has(h1[data-text="Main Menu"]) {
+  max-width: 93%;
+  min-height: 450px; /* 메인 메뉴 높이 증가 */
+  display: flex; /* Flex container */
+  flex-direction: column; /* Stack children vertically */
+  align-items: center; /* Center items horizontally */
+  position: relative; /* For absolute positioning of button if needed */
+}
+
+#showUrgentNoticesBtn {
+  position: absolute; /* Absolute positioning */
+  right: 30px; /* Adjust as needed */
+  top: 30px; /* Adjust as needed */
+  background: rgba(255,42,42,0.1);
+  border: 1px solid #ff2a2a;
+  color: #ff2a2a;
+  padding: 6px 12px; /* Reduced padding */
+  border-radius: 6px;
+  cursor: pointer;
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 700;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 10px #ff2a2a, 0 0 20px #ff2a2a80; /* 네온 효과 */
+  font-size: 1rem; /* Reduced font size */
+  text-shadow: 0 0 5px rgba(255, 42, 42, 0.7), 0 0 10px rgba(255, 0, 94, 0.5); /* Adjusted brightness */
+}
+
+#showUrgentNoticesBtn:hover {
+  background: #ff2a2a;
+  color: #000;
+  box-shadow: 0 0 15px #ff2a2a, 0 0 30px #ff2a2a;
+}
+
+#urgentNoticesListPopup {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Changed to center for consistent horizontal alignment */
+  justify-content: flex-start; /* Default justification */
+}
+
+#urgentNoticesListPopup .urgent-notice-toggle-btn {
+  align-self: flex-end; /* Align the button to the right within the flex container */
+}
+
+.urgent-notice-toggle-btn {
+  background: rgba(255,42,42,0.1);
+  border: 1px solid #ff2a2a;
+  color: #ff2a2a;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-family: 'Orbitron', sans-serif;
+  font-weight: bold;
+  transition: all 0.3s ease;
+  margin-left: auto; /* Added to align right */
+}
+
+.urgent-notice-toggle-btn:hover {
+  background: #ff2a2a;
+  color: #000;
+  box-shadow: 0 0 15px #ff2a2a;
+}
+
+/* 경고 모달 스타일 */
+.warning-header {
+  background: rgba(255, 0, 0, 0.2);
+  border-bottom: 1px solid #ff0000;
+}
+
+.warning-header h2 {
+  color: #ff0000;
+  text-shadow: 0 0 8px #ff0000;
+}
+
+#warningMessage {
+  text-align: center;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #ff2a2a;
+  text-shadow: 0 0 5px rgba(255, 42, 42, 0.7), 0 0 10px rgba(255, 0, 94, 0.5);
+}
